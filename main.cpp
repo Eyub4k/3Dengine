@@ -2,8 +2,11 @@
 #include <glfw3.h>   // Interface de gestion de fenêtres et événements
 #include <iostream>   
 #include <string>    
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
-using namespace std ;
+using namespace std;
 
 // Fonction de gestion du redimensionnement de la fenêtre
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -14,15 +17,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 // Code source du Vertex Shader (gestion des sommets)
 const char* vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"  // Définit l'emplacement du sommet dans l'input (location = 0)
+    "uniform mat4 model;\n"  // Matrice du modèle (transformation)
+    "uniform mat4 view;\n"   // Matrice de la vue (caméra)
+    "uniform mat4 projection;\n"  // Matrice de projection (perspective)
     "void main() {\n"
-    "   gl_Position = vec4(aPos, 1.0);\n"    // La position finale du sommet, convertie en coordonnées homogènes
+    "   gl_Position = projection * view * model * vec4(aPos, 1.0);\n"  // Applique les transformations
     "}\0"; 
 
 // Code source du Fragment Shader (gestion des couleurs des pixels)
 const char* fragmentShaderSource = "#version 330 core\n"
     "out vec4 FragColor;\n"  // Déclare la couleur de sortie du fragment
     "void main() {\n"
-    "   FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"  // Ici on définit une couleur orange (RGB = 1.0, 0.5, 0.2, 1.0 pour la coleur orange)
+    "   FragColor = vec4(1.0, 1.0, 0.0, 1.0);\n"  // Ici on définit une couleur jaune (RGB = 1.0, 1.0, 0.0, 1.0 pour du jaune)
     "}\0";  
 
 int main() {
@@ -48,6 +54,7 @@ int main() {
         return -1;
     }
 
+    // Définir les sommets pour trois triangles
     float vertices[] = {
         // Triangle 1 (Haut)
         -0.5f,  0.5f, 0.0f,  // Haut gauche
@@ -64,7 +71,6 @@ int main() {
         1.0f,  0.0f, 0.0f,   // Bas droit extérieur
         0.0f,  0.0f, 0.0f    // Bas milieu droit
     };
-    
 
     // Création et configuration des VAO (Vertex Array Object) et VBO (Vertex Buffer Object)
     unsigned int VAO, VBO;
@@ -94,18 +100,33 @@ int main() {
     glLinkProgram(shaderProgram);  // Lie les shaders pour créer un programme complet
     glDeleteShader(vertexShader);  // Supprime le shader de vertex après l'avoir lié au programme
     glDeleteShader(fragmentShader);  // Supprime le shader de fragment après l'avoir lié au programme
-    // free memoire -> donc optimisation
+
+    // Matrices de transformation 3D
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);  // Projection perspective (pas trop grande ici)
+    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));  // Position de la caméra
+    glm::mat4 model = glm::mat4(1.0f);  // Matrice d'identité (pas de transformation)
 
     // Boucle principale de rendu
     while (!glfwWindowShouldClose(window)) { 
         glClear(GL_COLOR_BUFFER_BIT);  // Efface l'écran avec la couleur de fond par défaut (noir)
 
         glUseProgram(shaderProgram);  // Utilise le programme shader pour dessiner
+
+        model = glm::rotate(model, glm::radians(0.3f), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotation autour de l'axe Y
+
+        // Envoyer les matrices au shader
+        unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model"); // Obtenir l'emplacement de la variable  model dans le shader (pour la transformation de l'objet)
+        unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view"); // Obtenir l'emplacement de la variable view dans le shader (pour la caméra)
+        unsigned int projectionLoc = glGetUniformLocation(shaderProgram, "projection"); // Obtenir l'emplacement de la variable projection dans le shader (pour la projection 3D)
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); //Envoye la matrice model (transformation de l'objet) au shader
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view)); // Envoyer la matrice view (vue de la caméra) au shader
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection)); // Envoyer la matrice projection (projection 3D) au shader
+
         glBindVertexArray(VAO);  // Lie le VAO pour qu'il soit utilisé dans le rendu
-        glDrawArrays(GL_TRIANGLES, 0, 9);  // Dessine un triangle (3 sommets)
-        
+        glDrawArrays(GL_TRIANGLES, 0, 9);  // Dessine les triangles (9 sommets au total)
+
         glfwSwapBuffers(window);  // Échange les buffers pour afficher l'image rendue à l'écran
-        glfwPollEvents();  // Vérifier les événements (ex : fermer la fenêtre, touches pressées...)
+        glfwPollEvents();  // Vérifie les événements (ex : fermer la fenêtre, touches pressées...)
     }
 
     // Nettoyage des ressources après utilisation
