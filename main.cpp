@@ -41,7 +41,7 @@ int main() {
     // Création de la fenêtre GLFW
     GLFWwindow* window = glfwCreateWindow(800, 600, "Eyub Engine", NULL, NULL);  // Taille (800x600)
     if (window == NULL) {  
-        cout << "Échec de création de la fenêtre GLFW" << endl;
+        std::cout << "Échec de création de la fenêtre GLFW" << std::endl;
         glfwTerminate();  
         return -1;
     }
@@ -50,7 +50,7 @@ int main() {
 
     // Initialisation de GLAD (gestion des extensions OpenGL)
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {  // Charge toutes les fonctions OpenGL avec GLAD
-        cout << "Échec d'initialisation de GLAD" << endl;
+        std::cout << "Échec d'initialisation de GLAD" << std::endl;
         return -1;
     }
 
