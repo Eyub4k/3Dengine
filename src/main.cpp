@@ -501,12 +501,12 @@ int main() {
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
-    Shader shader("C:/Users/eyubc/OneDrive/Bureau/3Dengine/shaders/vertex_shader.glsl", "C:/Users/eyubc/OneDrive/Bureau/3Dengine/shaders/fragment_shader.glsl");
+    Shader shader("3Dengine/shaders/vertex_shader.glsl", "3Dengine/shaders/fragment_shader.glsl");
 
-    if (!loadOBJ("C:/Users/eyubc/OneDrive/Bureau/3Dengine/texture/exemple.obj")) return -1;
+    if (!loadOBJ("3Dengine/texture/exemple.obj")) return -1;
     setupMesh();
     
-    GLuint texture = loadTexture("C:/Users/eyubc/OneDrive/Bureau/3Dengine/texture/tex2.jpeg");
+    GLuint texture = loadTexture("3Dengine/texture/texture_exemple.jpeg");
     shader.use();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture); 
@@ -514,7 +514,7 @@ int main() {
 
     // creation du sol 
     Ground ground;
-    GLuint groundTexture = loadTexture("C:/Users/eyubc/OneDrive/Bureau/3Dengine/texture/text.jpg");
+    GLuint groundTexture = loadTexture("3Dengine/texture/ground_exemple.jpg");
 
     // var de lumiere
     glm::vec3 lightPos(1.0f, 1.0f, 1.0f);  // position de la lumiere
