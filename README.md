@@ -94,7 +94,7 @@ Ce projet implémente un moteur 3D basique utilisant OpenGL avec les fonctionnal
 
 ## Le Moteur Graphique : 
 
-![Exemple du moteur 3D](screenshots/exemple.png)
+![Exemple du moteur 3D](screenshots/exemple.jpg)
 
 ## Utilisation
 
