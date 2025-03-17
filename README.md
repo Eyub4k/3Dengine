@@ -1,6 +1,6 @@
 # Projet Moteur 3D
 
-Un moteur 3D simple avec OpenGL qui inclut une simulation physique, des contrôles de caméra et des capacités de chargement de modèles.
+Un moteur 3D simple avec OpenGL (C++) qui inclut une simulation physique, des contrôles de caméra et des capacités de chargement de modèles.
 
 ## Vue d'ensemble
 
