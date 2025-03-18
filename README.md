@@ -24,8 +24,7 @@ Ce projet implémente un moteur 3D basique utilisant OpenGL avec les fonctionnal
 │   └── fragment_shader.glsl   # Code du shader de fragment
 ├── texture/
 │   ├── exemple.obj            # Modèle 3D d'exemple
-│   ├── tex2.jpeg              # Texture pour le modèle 3D
-│   └── text.jpg               # Texture pour le sol
+│   └── texture.jpg               # Texture pour le sol
 ├── include/
 │   ├── glad.h                 # Chargeur OpenGL
 │   ├── glfw3.h                # Gestion de fenêtre et d'entrées
