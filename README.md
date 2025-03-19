@@ -176,3 +176,5 @@ Le moteur inclut un système physique basique avec :
 - Ajouter le support pour d'autres formats de modèles (FBX, GLTF)
 - Implémenter un graphe de scène pour une meilleure gestion des objets
 - Ajouter des techniques d'éclairage plus avancées
+
+Auteur : Eyub Celebioglu
