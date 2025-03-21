@@ -17,7 +17,7 @@ Ce projet implémente un moteur 3D basique utilisant OpenGL avec les fonctionnal
 ```
 3Dengine/
 ├── bin/
-│   ├── main                   # Exécutable compilé
+│   ├── main.exe               # Exécutable compilé
 │   └── Makefile               # Script de compilation
 ├── shaders/
 │   ├── vertex_shader.glsl     # Code du shader de vertex
